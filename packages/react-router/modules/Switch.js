@@ -10,6 +10,7 @@ import matchPath from "./matchPath.js";
  * The public API for rendering the first <Route> that matches.
  */
 class Switch extends React.Component {
+  clones = {};
   render() {
     return (
       <RouterContext.Consumer>
@@ -36,9 +37,11 @@ class Switch extends React.Component {
             }
           });
 
-          return match
+          let dom = match
             ? React.cloneElement(element, { location, computedMatch: match })
-            : null;
+            : clones[path] || null;
+            clones[path] = dom;
+            return dom;
         }}
       </RouterContext.Consumer>
     );
